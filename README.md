@@ -1,15 +1,17 @@
-# 1 - Stop active docker container
+## How to start project
 
-`docker stop tcp-front`
+1. Prepare yuor `.env` file:
 
-# 2 - Remove this container
+`REACT_APP_API_URL=http://localhost:3333/api/` or host and port when your back part
 
-`docker rm tcp-front`
+2. Install npm deps: `npm install`
+3. Run project: `npm start`
 
-# 3 - Build new container
+## Running in prod via docker
 
-`docker build -t tcp-front .`
+1. Prepare yuor `.env` file:
 
-# Start this container
+`REACT_APP_API_URL=http://localhost:3333/api/` or host and port when your back part
 
-`docker run -p 3000:3000 -d --name tcp-front tcp-front`
+2. Change permission for shell script: `chmod +x ci/deploy.sh`
+3. Start the project with: `ci/deploy.sh`
