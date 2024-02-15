@@ -4,8 +4,6 @@ import {
   sendData, 
   disConnect, 
   getActiveSockets, 
-  deleteSocket,
-  connectSocket
 } from './service/tcp-service';
 // import { SocketContext } from './service/socket'
 
@@ -22,19 +20,13 @@ export const App = () => {
 
   const handleSend = async (sessionId) => {
     const response = await sendData({text: inputValue, port: inputPort, host: inputHost, sessionId})
-    console.log(response)
+    console.log('response --->', response)
     await setResponse({value: response.value, sessionId: response.sessionId})
   }
 
-  // const handleDisConnect = async (id) => {
-  //     await disConnect(id)
-  //     setIsReady(!isReady)
-  // }
-
-
-  const handleDelete = async (id) => {
-    await deleteSocket(id)
-    setIsReady(!isReady)
+  const handleDisConnect = async (id) => {
+      await disConnect(id)
+      setIsReady(!isReady)
   }
 
   // useEffect(() => {
@@ -50,7 +42,7 @@ export const App = () => {
     fetchSockets()
   },[response, isReady])
 
-  console.log(sockets)
+  console.log('active sockets --->', sockets)
   return (
     <>
     <div className="App">
@@ -66,31 +58,20 @@ export const App = () => {
         <div className='inputBox response'>
           {sockets && sockets.map((socket) => (
             <div key={socket.sessionId}>
-              <p>{socket.remoteAddress ? socket.remoteAddress: 'unknown-host'}:{socket.remotePort ? socket.remotePort : 'unknown-port'}</p>
+              <p>{socket.remoteAddress ? socket.remoteAddress: 'host'}:{socket.remotePort ? socket.remotePort : 'port'}</p>
               <p>{response.sessionId === socket.sessionId ? response.value : 'no data'}</p>
               <button className='button' onClick={() => handleSend(socket.sessionId)}>SEND</button>
               <button
                 className='button'
                 style={{ backgroundColor: socket.isConnect ? 'green' : 'red' }}
-                onClick={() => {
-                  socket.isConnect
-                    ? disConnect(socket.sessionId)
-                    : connectSocket(socket.sessionId);
-                  setIsReady(!isReady);
-                } }
+                onClick={() => handleDisConnect(socket.sessionId)}
               >
                 {socket.isConnect ? 'Disconnect' : 'Connect'}
               </button>
-              <button className='button' onClick={() => handleDelete(socket.sessionId)}>Delete</button>
             </div>
           ))}
         </div>
       </div>
-      {/* { response.value !== '' && <div className='inputBox response'>
-      <p>Response: <i>{response.value}</i></p>
-      <p>SessionId: <i>{response.sessionId}</i></p>
-    </div>} */}
-
     </div>
     </>
   );

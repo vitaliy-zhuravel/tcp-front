@@ -31,9 +31,8 @@ export const getActiveSockets = async () => {
 
 export const connectSocket = async (id) => {
     try {
-        alert('this endpoint isn`t ready')
-    //    const response = await axios.post(`${API_URL}tcp-connect?sessionId=${id}`) 
-    //    return response.data
+       const response = await axios.post(`${API_URL}tcp-connect?sessionId=${id}`) 
+       return response.data
     } catch (error) {
         console.log(error)
     }
